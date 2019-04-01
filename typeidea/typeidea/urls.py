@@ -16,9 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from blog.views import post_detail, post_list
+from config.views import links
 from typeidea.custom_site import custom_site
 
 urlpatterns = [
+    url(r'^$', post_list),  # 首页
+    url(r'^category/(?P<category_id>\d+)/$', post_list),   # 分类页面
+    url(r'^tag/(?P<tag_id>\d+)/$', post_list),     # 标签
+    url(r'^post/(?P<post_id>\d+).html$', post_detail),    # 文章
+    url(r'^links$', links),  # 友链
     url(r'^super_admin/', admin.site.urls),
     url(r'^admin/', custom_site.urls),
 ]
