@@ -21,11 +21,11 @@ from config.views import links
 from typeidea.custom_site import custom_site
 
 urlpatterns = [
-    url(r'^$', post_list),  # 首页
-    url(r'^category/(?P<category_id>\d+)/$', post_list),   # 分类页面
-    url(r'^tag/(?P<tag_id>\d+)/$', post_list),     # 标签
-    url(r'^post/(?P<post_id>\d+).html$', post_detail),    # 文章
-    url(r'^links$', links),  # 友链
-    url(r'^super_admin/', admin.site.urls),
-    url(r'^admin/', custom_site.urls),
+    url(r'^$', post_list, name='index'),  # 首页
+    url(r'^category/(?P<category_id>\d+)/$', post_list, name='category-list'),   # 分类页面
+    url(r'^tag/(?P<tag_id>\d+)/$', post_list, name='tag-list'),     # 标签
+    url(r'^post/(?P<post_id>\d+).html$', post_detail, name='post-detail'),    # 文章
+    url(r'^links$', links, name='links'),  # 友链
+    url(r'^super_admin/', admin.site.urls, name='super-admin'),
+    url(r'^admin/', custom_site.urls, name='admin'),
 ]
