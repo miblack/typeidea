@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^links/$', LinkView.as_view(), name='links'),  # 友链
     url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
-    url(r'^comment/$',CommentView.as_view(), name='comment'),
+    url(r'^comment/$', CommentView.as_view(), name='comment'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin'),
 ]

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'blog',
     'config',
     'comment',
+    'comment.templatetags',
 
     'django.contrib.admin',
     'django.contrib.auth',

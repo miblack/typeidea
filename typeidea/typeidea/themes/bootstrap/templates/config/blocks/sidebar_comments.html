@@ -1,6 +1,8 @@
 <ul>
     {% for comment in comments %}
-    <li><a href="/post/{{ comment.target.id }}.html">{{ comment.target.title }}</a></li>
+    <li><a href="{{ comment.target }}">{{ comment.target.title }}</a></li>
+    {% autoescape off %}
     {{ comment.nickname }} : {{ comment.content }}
+    {% endautoescape %}
     {% endfor %}
 </ul>
