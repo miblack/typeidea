@@ -1,48 +1,14 @@
-from django.db.models import Q
+from datetime import date
+
+from django.db.models import Q, F
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
+from django.core.cache import cache
 
 from .models import Post, Tag, Category
 from config.models import SideBar
 from comment.forms import CommentForm
 from comment.models import Comment
-
-
-# def post_list(request, category_id=None, tag_id=None):
-#     tag = None
-#     category = None
-#
-#     if tag_id:
-#         post_list, tag = Post.get_by_tag(tag_id)
-#     elif category_id:
-#         post_list, category = Post.get_by_category(category_id)
-#     else:
-#         post_list = Post.latest_posts()
-#
-#     context = {
-#         'category': category,
-#         'tag': tag,
-#         'post_list': post_list,
-#         'sidebars': SideBar.get_all(),
-#     }
-#
-#     context.update(Category.get_navs())
-#     return render(request, 'blog/list.html', context=context)
-#
-#
-# def post_detail(request, post_id):
-#     try:
-#         post = Post.objects.get(id=post_id)
-#     except Post.DoesNotExist:
-#         post = None
-#
-#     context = {
-#         'post': post,
-#         'sidebars': SideBar.get_all(),
-#     }
-#
-#     context.update(Category.get_navs())
-#     return render(request, 'blog/detail.html', context=context)
 
 
 class CommonViewMixin:
@@ -68,6 +34,33 @@ class PostDetailView(CommonViewMixin, DetailView):
             'comment_list': Comment.get_by_target(self.request.path)
         })
         return context
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        self.handle_visited()
+        return response
+
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid, self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key, 1, 1*60)
+
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(uv_key, 1, 24 * 60 * 60)
+
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv=F('uv') + 1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('uv') + 1)
 
 
 # /
