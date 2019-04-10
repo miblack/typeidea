@@ -20,6 +20,7 @@ from blog.views import PostDetailView, IndexView, CategoryView, TagView, SearchV
 from config.views import LinkView
 from typeidea.custom_site import custom_site
 from comment.views import CommentView
+from blog.rss import LatestPostFeed
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),  # 首页
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
+    url(r'^rss/$', LatestPostFeed(), name='rss'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', custom_site.urls, name='admin'),
 ]
