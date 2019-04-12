@@ -13,14 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+import xadmin
+
+from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
+from django.conf import settings
+
 
 from blog.views import PostDetailView, IndexView, CategoryView, TagView, SearchView, AuthorView
 from config.views import LinkView
-from typeidea.custom_site import custom_site
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
+from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),  # 首页
@@ -33,5 +38,8 @@ urlpatterns = [
     url(r'^comment/$', CommentView.as_view(), name='comment'),
     url(r'^rss/$', LatestPostFeed(), name='rss'),
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
-    url(r'^admin/', custom_site.urls, name='admin'),
-]
+    url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),    # 分类搜索自动补全
+    url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),     # 标签搜索自动补全
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

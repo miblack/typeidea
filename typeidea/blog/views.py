@@ -84,7 +84,7 @@ class CategoryView(IndexView):
     def get_queryset(self):
         queryset = super().get_queryset()
         category_id = self.kwargs.get('category_id')
-        return queryset.filter(category_id=category_id)
+        return queryset.filter(category__id=category_id)
 
 
 class TagView(IndexView):
@@ -100,7 +100,7 @@ class TagView(IndexView):
     def get_queryset(self):
         queryset = super().get_queryset()
         tag_id = self.kwargs.get('tag_id')
-        return queryset.filter(tag_id=tag_id)
+        return queryset.filter(tag__id=tag_id)
 
 
 class SearchView(IndexView):
@@ -123,7 +123,7 @@ class AuthorView(IndexView):
     def get_queryset(self):
         queryset = super().get_queryset()
         author_id = self.kwargs.get('owner_id')
-        return queryset.filter(owner_id=author_id)
+        return queryset.filter(owner__id=author_id)
 
 
 

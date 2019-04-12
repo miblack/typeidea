@@ -34,7 +34,16 @@ INSTALLED_APPS = [
     'blog',
     'config',
     'comment',
-    'comment.templatetags',
+    'comment.templatetags',   # 评论块
+
+    'xadmin',
+    'crispy_forms',    # xadmin管理后台
+
+    'dal',
+    'dal_select2',     # 搜索自动补全
+
+    'ckeditor',   # 富文本编辑器
+    'ckeditor_uploader',  # 带图片上传功能
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -116,5 +125,27 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+XADMIN_TITLE = '博客系统后台管理'
+XADMIN_FOOTER_TITLE = 'power by miblack'
+
+
+# 富文本编辑器
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpace': 4,
+        'extraPlugins': 'codesnippet',    # 配置代码插件
+    }
+}
+
+# 富文本编辑器图片上传路径
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+CKEDITOR_UPLOAD_PATH = "article_images"
+
+DEFAULT_FILE_STORAGE = 'typeidea.storage.WatermarkStorage'
 
 
