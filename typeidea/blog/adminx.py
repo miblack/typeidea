@@ -3,7 +3,6 @@ from xadmin.filters import manager
 from xadmin.filters import RelatedFieldListFilter
 import xadmin
 
-from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -12,7 +11,7 @@ from .adminform import PostAdminForm
 from typeidea.base_admin import BaseOwnerAdmin
 
 
-class PostInline(admin.TabularInline):
+class PostInline:
     form_layout = (
         Container(
             Row('title', 'desc'),
