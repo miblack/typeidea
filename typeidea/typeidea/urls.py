@@ -14,18 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 import xadmin
+from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
 
-
 from blog.views import PostDetailView, IndexView, CategoryView, TagView, SearchView, AuthorView
 from config.views import LinkView
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
+from blog.apis import PostViewSet
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet, base_name='api-post')
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),  # 首页
@@ -42,4 +47,7 @@ urlpatterns = [
     url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),    # 分类搜索自动补全
     url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),     # 标签搜索自动补全
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+
+    url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
