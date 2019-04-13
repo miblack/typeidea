@@ -150,4 +150,9 @@ CKEDITOR_UPLOAD_PATH = "article_images"
 
 DEFAULT_FILE_STORAGE = 'typeidea.storage.WatermarkStorage'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SiZE': 2,
+}
+
 

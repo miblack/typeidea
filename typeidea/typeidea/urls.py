@@ -26,11 +26,12 @@ from blog.views import PostDetailView, IndexView, CategoryView, TagView, SearchV
 from config.views import LinkView
 from comment.views import CommentView
 from blog.rss import LatestPostFeed
-from blog.apis import PostViewSet
+from blog.apis import PostViewSet, CategoryViewSet
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
 router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='api-post')
+router.register(r'category', CategoryViewSet, base_name='api-category')
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),  # 首页
