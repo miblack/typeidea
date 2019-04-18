@@ -21,6 +21,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from django.views.static import serve
 
 from blog.views import PostDetailView, IndexView, CategoryView, TagView, SearchView, AuthorView
 from config.views import LinkView
@@ -28,6 +29,7 @@ from comment.views import CommentView
 from blog.rss import LatestPostFeed
 from blog.apis import PostViewSet, CategoryViewSet
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
+from .settings.base import STATIC_ROOT
 
 router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='api-post')
@@ -43,8 +45,11 @@ urlpatterns = [
     url(r'^author/(?P<owner_id>\d+)/$', AuthorView.as_view(), name='author'),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
     url(r'^rss/$', LatestPostFeed(), name='rss'),
+
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
+
     url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),    # 分类搜索自动补全
     url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),     # 标签搜索自动补全
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
