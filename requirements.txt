@@ -1,7 +1,0 @@
-Django==1.11.20
-django-rest-framework==0.1.0
-pillow==5.1.0
-xadmin==0.6.1
-mistune==0.8.4
-django-ckeditor==5.4.0
-
